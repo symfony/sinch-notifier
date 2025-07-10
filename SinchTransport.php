@@ -43,7 +43,7 @@ final class SinchTransport extends AbstractTransport
 
     public function __toString(): string
     {
-        return sprintf('sinch://%s?from=%s', $this->getEndpoint(), $this->from);
+        return \sprintf('sinch://%s?from=%s', $this->getEndpoint(), $this->from);
     }
 
     public function supports(MessageInterface $message): bool
@@ -57,7 +57,7 @@ final class SinchTransport extends AbstractTransport
             throw new UnsupportedMessageTypeException(__CLASS__, SmsMessage::class, $message);
         }
 
-        $endpoint = sprintf('https://%s/xms/v1/%s/batches', $this->getEndpoint(), $this->accountSid);
+        $endpoint = \sprintf('https://%s/xms/v1/%s/batches', $this->getEndpoint(), $this->accountSid);
         $response = $this->client->request('POST', $endpoint, [
             'auth_bearer' => $this->authToken,
             'json' => [
@@ -76,7 +76,7 @@ final class SinchTransport extends AbstractTransport
         if (201 !== $statusCode) {
             $error = $response->toArray(false);
 
-            throw new TransportException(sprintf('Unable to send the SMS: %s (%s).', $error['text'], $error['code']), $response);
+            throw new TransportException(\sprintf('Unable to send the SMS: %s (%s).', $error['text'], $error['code']), $response);
         }
 
         $success = $response->toArray(false);
